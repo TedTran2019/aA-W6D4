@@ -1,0 +1,188 @@
+jQuery Triggering: Can trigger events manually instead of when the user
+takes some action
+
+Event Propagation -> Bubbles onto its parents in nesting order, e.g inner ->
+middle -> outer
+
+event.target -> deepest element which triggered the event
+event.currentTarget -> element on which the handler is registered
+
+Can stop propagation through event.stopPropagation(), meaning no more bubbling!
+---------------------------------------------------------------------------
+
+History -> web api that allows browser session history manipulation
+- session history is stack of URLs user has visited within a given tab
+- can access thru window.history in client-side JS
+- methods: #back(), #forward(), etc
+https://developer.mozilla.org/en-US/docs/Web/API/History
+
+Location -> web api to access/manipulate current URL
+- window.location
+- useful properties:
+	- href -> string containing entire href, can set to another url to make GET
+		request and navigate
+	- hash, returns a string containing # followed by fragment identifier
+	- setting hash to any string will append fragment identifier to the URL and not
+		make another GET request
+- notice that location changes pushes to the History obj
+https://developer.mozilla.org/en-US/docs/Web/API/Location
+
+Altering window.location.hash fires a special hashchange event -> can add
+handler/trigger callback whenever hash changes
+----------------------------------------------------------------------
+Vanilla JS -> means using a language/library w/o additional enhancements,
+e.g vanilla JS -> JS without any additional libraries
+
+jQuery with Rails bc of jquery-rails gem, makes things easy.
+jquery-ujs monkey-patches AJAX requests to include Rails CSRF token
+
+Exs. of when cannot use jQuery
+1. jQuery is a considerably sized resource, if need speed, may want to use API
+	provided by browser instead
+2. Not needed for basic DOM manipulation, will suffice without jQuery
+3. Company that pays you doesn't like it, boom!
+
+https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model
+3 main classes:
+1. Node -> basic element representing a node on the Dom
+2. Element -> Inherits from node, each ele on doc is a descendent of Element
+	a. HTMLElement -> inherits from Element, specifically represents HTML elements
+		(created from HTML tags)
+	b. HTMLCollection -> array-like obj containing collection of HTMlElement
+3. Document -> root element of page, serves as entry point to the content in
+	our page
+
+To select something from page -> call method on document that would return either
+an HTMLElement or HTMLCollection
+
+Basic methods:
+- document.getElementById
+- Element.getElementsByClassName
+- Element.querySelectorAll
+- EventTarget.addEventListener
+- Node.appendChild
+- Node.removeChild
+
+It looks like it'll be the same game as jQuery-- just constantly looking at the
+docs for methods/learning what it takes/returns/does.
+
+Why does Rails like $.ajax wrapper instead of plain XMLHttpRequest?
+- jQuery w/ those two gems mentioned earlier will automatically handle CSRF tokens
+- jQuery will automatically transform JSON (string) into JS objs.
+- jQuery API much more user-friendly than XHR
+https://assets.aaonline.io/fullstack/javascript/demos/vanilla_user_search.js
+- Notice setting inner HTML to '' is equiv. to removing all child elements
+- notice methods used
+
+Functionality of AJAX accomplished thru XMLHttpRequest obj aka XHR. Steps to
+make this are
+1. Create a XHR obj
+2. Tell it where to go and what verb to use
+3. Tell it what to do when it's finished loading (register a callback)
+4. Send off the request (w/ optional data)
+new XMLHttpRequest(), #open, #onload, #send, #status, #responseType, #response, etc
+https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
+
+What is the delegateTarget -> where event handler was attached
+-----------------------------------------------------------------
+Brendan Eich -> created JS in 10 days in 1995, under Netscape Communications
+w/ collaboration of Sun Microsystems.
+Following suit, Microsoft made JScript in IE 3.0 -> 1997, ECMAScript was made
+as a standard.
+Javascript, JScript, and ActionScript are all valid implementations of ECMAScript
+- Microsoft's IE is only browser that uses Jscript
+- ActionScript more OOP than JS, uses classical inheritance rather than prototypical.
+	Developed by Macromedia Inc, merged into Adobe, rapidly declined since Apple/Adobe
+	Flash controversy
+
+Package managers: NPM vs Bower
+- handles project dependencies
+- Bower esp. for managing frontend dependencies, so bundling tool like Webpack
+	is not required
+- aA uses npm w/ webpack
+
+Vocab:
+vanilla: standard JS w/o frameworks/libraries
+hoisting: var/function declarations put into memory at compile time, can call
+	declared func/var before it's defined
+'use strict'; -> on top of JS files, special compiler directive called pragma.
+Ensures code in scope follows certain rules
+IIFE -> immediately invoked function expression, called immediately after defined
+jQuery -> free open source JS library to manipulate DOM
+	- jQuery's utility functions roughly mirror those provided by lodash.js.
+MEAN stack -> MongoDB, Express, Angular, Node
+	a. MongoDB - noSQL db
+	b. Express - Sinatra-inspired server
+	c. Angular - frontend MVC framework
+	d. Node - server-side JS environment
+
+Functional Programming -> JS w/ treatment of functions as first-class objs, can
+be treated as a functional lang w/o much effort. Redux uses several patterns/concepts
+from functional programming such as currying, pure functions, and no mutation of
+information. These ideas can encompass entirety of JS program thru use of various
+libraries.
+- Immutable.js -> makes every obj immutable, to update an obj's info, replace with
+	a new object
+
+POJO -> plain old javascript object. OBj w/ attributes, setter methods, getter methods.
+Any JS obj w/o additional methods is a POJO.
+------------------------------------------------------------------------------------
+Browsers
+- purpose to display web resources
+- user of browser tells it where resource is located
+- browser fetches, parses, and displays that resource
+
+Main components:
+- UI -> consist of browser display elements
+- browser engine: coordinates UI and rendering engine
+- rendering enguine: displays requested content, parsing HTML/CSS if necessary
+- networking: handles network calls
+- UI backend: draws widgets like dropdown lists and windows
+- Javascript interpreter
+- Data storage: handles cookies and localStorage, etc.
+Browsers are made of millions of lines of C++ code...
+- Typically a browser will have instance of rendering enguine running for each tab
+- Diff browsers use diff rendering engines, in general their pattern is
+	- parse HTML doc to construct DOM tree
+		- HTML eles get converted to DOM nodes in content tree
+	- construct render tree
+		- CSS info/styling from HTML to create render tree from content tree
+		- rectangle for each node w/ dimension in color, ordered in same way as
+			ordered on display
+	- add layout info to render tree
+		- each node receives exact coors on screen
+	- paint the render tree
+		- render tree is traversed and each node painted, uses UI backend to access
+			OS drawing capabilities
+
+HTML Parsing, 2 things need to happen
+1. HTML doc broken into HTML elements
+2. rules of HTML syntax applied to elements
+Not a context-free grammar, so parsing is complex.
+JS can be loaded syn or async, while stylesheets are always sync.
+
+Render Tree Construction:
+- Each ele in render tree called a frame or a renderer knows how to layout/paint
+	itself and is children
+- Width/height/position, rectangular area
+- Floating/absolutely positioned handled diff from block/inline
+- Computing style of a given element can be very costly -- to optimize, some browsers
+	use two extra trees. Style-context and rule. If this isn't implemented, imagine
+	4x traversal for style declarations....
+- hashmap is used to filter out rules that don't apply to a given element.
+	- selected then ordered by specificity
+
+Layout:
+- HTML uses a flow-based layout model, can start at 0,0 and find pos of almost all
+	elements in a single pass.
+- Progresses recursively from html to all descendants
+- 2 events can trigger layout events: global changes and incremental changes
+- global layout sync, incremental layout async
+
+Painting: Order is
+Background color -> background image -> border -> children -> outline
+Can be global or incremental, little work as possible in respond to a change...
+Both at structural and at a lower level...
+https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/
+How browsers work!
+--------------------------------------------------------------------------
