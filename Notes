@@ -243,3 +243,13 @@ functionality...
 
 #splice proves to be very useful...
 2 args -> start, delete count
+
+DOMContentLoaded vs Document.readyState...
+
+"Most browsers provide similar functionality in the form of a DOMContentLoaded
+event. However, jQuery's .ready() method differs in an important and useful way:
+If the DOM becomes ready and the browser fires DOMContentLoaded before the code
+calls .ready( handler ), the function handler will still be executed. In contrast,
+a DOMContentLoaded event listener added after the event fires is never executed."
+
+https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
