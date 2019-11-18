@@ -186,3 +186,53 @@ Both at structural and at a lower level...
 https://www.html5rocks.com/en/tutorials/internals/howbrowserswork/
 How browsers work!
 --------------------------------------------------------------------------
+
+Code wrapped in event listener for 'DOMContentLoaded'! Same as jQuery's
+$() wrapping!
+
+querySelector -> returns single element, first found
+querySelectorAll -> returns all elements wrapped in a NodeList obj
+
+#createElement, #textContent, #appendChild, access attributes thru dot notation,
+#removeChild, #parentElement, #value getter/setter, #addEventListener
+- Notice the etc.parentElement.removeChild(etc)
+- can do etc.disabled = true to disable and such
+
+HTML5 added classList, which has #add, #remove, #contains, #toggle
+-----------------------------------------------------------------------------
+Know how to traverse and manipulate the DOM using vanilla JavaScript
+Be able to create a class to serve as a wrapper for DOM nodes / HTML elements
+Understand an HTML page as a tree of DOM nodes
+Get familiar with some of the properties that HTML elements have
+Know how to create event listeners using vanilla JavaScript
+
+https://developers.google.com/speed/libraries/#jquery
+-> Google developer's libraries
+
+Phase 1: Implementing #empty, #remove, #attr, #addClass, #removeClass, #html,
+#find, #children, #parent
+https://developer.mozilla.org/en-US/docs/Web/API/element
+
+Jvascript's built-in #innerHTML
+
+Hmm, notice how you had to use #cloneNode because those children nodes couldn't
+be appended to multiple parents/the same parent multiple times.
+
+JS spread operator for array into multiple arguments
+
+Can also use spread operator as it's functionally equiv. to Array.from.
+Array.from converts whatever into an array! Could also use
+Array.prototype.slice.call(whatever) to make a new array!
+
+Look at how they refrained from adding duplicate parents in the instructor's
+solution-- usage of an extra attrib visited.
+
+Use everything at your disposal to solve the problem, even if it seems
+hacky at the time!
+
+Huh, how foolish of me. I thought for querySelector and querySelectorAll could
+only be used on document obj, not just any type of node to start from there.
+Woo, that makes things a lot easier.
+
+remove vs removeChild -> identical results
+remove needs ref to child, removeChild needs reference to parent and child
