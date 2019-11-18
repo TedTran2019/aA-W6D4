@@ -96,6 +96,62 @@ class DOMNodeCollection {
 			node.remove();
 		});
 	}
+
+	// Not handling event delegation
+	on(events, callback) {
+		events = events.split(' ');
+		this.arr.forEach(node => {
+			events.forEach(event => {
+				node.addEventListener(event, callback);
+				node.callbacks = node.callbacks || {};
+				if (node.callbacks[event]) {
+					node.callbacks[event].push(callback);
+				} else {
+					node.callbacks[event] = [callback];
+				}
+			});
+		});
+	}
+
+	// In hindsight here could have split into multiple functions, then used
+	// said functions to help do other functions to keep it DRY.
+	off(events, callback) {
+		if (events) {
+			events = events.split(' ');
+		}
+		if (events && callback) {
+			this.arr.forEach(node => {
+				events.forEach(event => {
+					node.removeEventListener(event, callback);
+					let i = node.callbacks[event].indexOf(callback);
+					node.callbacks[event].splice(i, 1);
+				});
+			});
+		} else if (events) {
+			this.arr.forEach(node => {
+				events.forEach(event => {
+					let callbacks = node.callbacks[event];
+					node.callbacks[event] = [];
+					callbacks.forEach(callback => {
+						node.removeEventListener(event, callback);
+					});
+				});
+			});
+		} else {
+			this.arr.forEach(node => {
+				let obj = node.callbacks;
+				for (const event in obj) {
+					let callbacks = obj[event];
+					callbacks.forEach(callback => {
+						node.removeEventListener(event, callback);
+					});
+				}
+				// node.outerHTML = node.outerHTML; -> This broke on/off for some reason
+				// on the second iteration...
+				node.callbacks = {};
+			});
+		}
+	}
 }
 
 module.exports = DOMNodeCollection;

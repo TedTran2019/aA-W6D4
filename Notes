@@ -236,3 +236,10 @@ Woo, that makes things a lot easier.
 
 remove vs removeChild -> identical results
 remove needs ref to child, removeChild needs reference to parent and child
+
+#on and #off only accept one handler, the latest one!
+Instructor solution did an extremely basic on/off without most of jQuery
+functionality...
+
+#splice proves to be very useful...
+2 args -> start, delete count
