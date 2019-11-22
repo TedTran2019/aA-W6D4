@@ -253,3 +253,59 @@ calls .ready( handler ), the function handler will still be executed. In contras
 a DOMContentLoaded event listener added after the event fires is never executed."
 
 https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest
+
+Reviewing instructor solution for jQuery-lite
+1. Dom Node collection is pretty similar, all in all.
+2. For AJAX request, I didn't account for GET's data being in the form of a
+	query string. e.g, url would have to be += `?${toQueryString(options.data)}`,
+	with toQueryString being a self-made method that converts the data into a
+	query string.
+3. Forgot about including 'true' for #open in XMLHttpRequest, but I think that's
+	default.
+4. Comment: onload is triggered when #readyState === #DONE === 4, like I recall
+	reading in the SO answer... -> Hmm, they also included the response into the
+	error handler but that isn't what jQuery does.
+5. Handled ready in a different manner. Utilized DOMContentLoaded, but also
+	readyState to run the function instantly provided it wasn't loaded. e.g,
+	if already loaded, run all functions in queue, else add to the queue that will
+	all run due to teh eventListener DOMContentLoaded. I did it messily using
+	setInterval, was going to refactor into utilizing DOMContentLoaded but changed
+	my mind and moved on...
+-----------------------------------------------------------------------------
+Understand the basics of how to make a single-page application
+Know how to change a URL's hash fragment
+Know how a frontend router works
+- Know how to listen to changes in the hash fragment
+- Know how to conditionally render different HTML based on the route
+Understand the purpose of separating concerns
+- Know why we write display code in components
+- Know why we write data management code in our store
+
+https://en.wikipedia.org/wiki/Single-page_application (SPA)
+Notice usage of location hash or history API
+
+"changing the hash fragment. When the URL of a page changes so that only the
+hash fragment changes, your browser will not make a new HTTP request. Instead,
+it will emit a hashchange event. We will add an event listener for this event,
+and then use javascript to update the DOM based on the new hash fragment."
+
+"separate "view" logic into separate modules that will be responsible for
+returning a DOM Node to display. These modules are called "components"."
+
+"Separating the configuration logic from the routing logic promotes separation
+of concerns."
+
+"Just like we separated our router from our components, we are going to make a
+separate module to store our data and expose an API for retrieving and
+manipulating it."
+
+That was actually really easy since it was a step-by-step thing, took like
+under  2 hours.
+
+Instructor solution differences for mail:
+1. I did location.hash = "#inbox" instead of just "inbox", but it still worked.
+2. Message class took in args
+3. MessageStore returned a copy of the messages instead of the messages themselves
+	by utilizing slice
+4. No idea what localStorage.getItem is, will google.
+	a. https://developer.mozilla.org/en-US/docs/Web/API/Storage/getItem
