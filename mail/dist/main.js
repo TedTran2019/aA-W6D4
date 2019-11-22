@@ -86,14 +86,14 @@
 /************************************************************************/
 /******/ ({
 
-/***/ "./src/Inbox.js":
+/***/ "./src/inbox.js":
 /*!**********************!*\
-  !*** ./src/Inbox.js ***!
+  !*** ./src/inbox.js ***!
   \**********************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const MessageStore = __webpack_require__(/*! ./message_store.js */ \"./src/message_store.js\");\n\nInbox = {};\n\nInbox.render = function() {\n\tlet ul = document.createElement('ul');\n\tul.className = 'messages';\n\tMessageStore.getInboxMessages().forEach(message => {\n\t\tmessageNode = this.renderMessage(message);\n\t\tul.appendChild(messageNode);\n\t});\n\treturn ul;\n};\n\nInbox.renderMessage = function (message) {\n\tlet li = document.createElement('li');\n\tli.className = 'message';\n\tli.innerHTML = `\n\t<span class=\"from\">${message.from}</span>\n\t<span class=\"subject\">${message.subject}</span>\n\t<span class=\"body\">${message.body}</span>\n\t`;\n\treturn li;\n};\n\nmodule.exports = Inbox;\n\n\n//# sourceURL=webpack:///./src/Inbox.js?");
+eval("const MessageStore = __webpack_require__(/*! ./message_store.js */ \"./src/message_store.js\");\n\nInbox = {};\n\nInbox.render = function() {\n\tlet ul = document.createElement('ul');\n\tul.className = 'messages';\n\tMessageStore.getInboxMessages().forEach(message => {\n\t\tmessageNode = this.renderMessage(message);\n\t\tul.appendChild(messageNode);\n\t});\n\treturn ul;\n};\n\nInbox.renderMessage = function (message) {\n\tlet li = document.createElement('li');\n\tli.className = 'message';\n\tli.innerHTML = `\n\t<span class=\"from\">${message.from}</span>\n\t<span class=\"subject\">${message.subject}</span>\n\t<span class=\"body\">${message.body}</span>\n\t`;\n\treturn li;\n};\n\nmodule.exports = Inbox;\n\n\n//# sourceURL=webpack:///./src/inbox.js?");
 
 /***/ }),
 
@@ -104,7 +104,7 @@ eval("const MessageStore = __webpack_require__(/*! ./message_store.js */ \"./src
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const Router = __webpack_require__(/*! ./router.js */ \"./src/router.js\");\nconst Inbox = __webpack_require__(/*! ./Inbox.js */ \"./src/Inbox.js\");\n\nconst routes = {\n\tinbox: Inbox\n};\n\ndocument.addEventListener('DOMContentLoaded', event => {\n\tlet eles = document.querySelectorAll('.sidebar-nav li');\n\tlet content = document.querySelector('.content');\n\tnew Router(content, routes);\n\tlocation.hash = \"#inbox\";\n\teles.forEach(ele => {\n\t\tele.addEventListener('click', event => {\n\t\t\twindow.location.hash = ele.innerText.toLowerCase();\n\t\t});\n\t});\n});\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("const Router = __webpack_require__(/*! ./router.js */ \"./src/router.js\");\nconst Inbox = __webpack_require__(/*! ./inbox.js */ \"./src/inbox.js\");\nconst Sent = __webpack_require__(/*! ./sent.js */ \"./src/sent.js\");\n\nconst routes = {\n\tinbox: Inbox,\n\tsent : Sent\n};\n\ndocument.addEventListener('DOMContentLoaded', event => {\n\tlet eles = document.querySelectorAll('.sidebar-nav li');\n\tlet content = document.querySelector('.content');\n\tnew Router(content, routes);\n\tlocation.hash = \"#inbox\";\n\teles.forEach(ele => {\n\t\tele.addEventListener('click', event => {\n\t\t\twindow.location.hash = ele.innerText.toLowerCase();\n\t\t});\n\t});\n});\n\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ }),
 
@@ -127,6 +127,17 @@ eval("const messages = {\n\tsent : [],\n\tinbox : []\n};\n\nconst message1 = {\n
 /***/ (function(module, exports) {
 
 eval("class Router {\n\tconstructor(node, routes) {\n\t\tthis.node = node;\n\t\tthis.routes = routes;\n\t\tthis.start();\n\t}\n\n\tstart() {\n\t\tthis.render();\n\t\twindow.addEventListener('hashchange', _event => this.render());\n\t}\n\n\tactiveRoute() {\n\t\tlet locationStr = window.location.hash\n\t\treturn this.routes[locationStr.slice(1, locationStr.length)];\n\t}\n\n\trender() {\n\t\tlet component = this.activeRoute();\n\t\tthis.node.innerHTML = \"\";\n\t\tif (component) {\n\t\t\tlet componentNode = component.render();\n\t\t\tthis.node.appendChild(componentNode);\n\t\t}\n\t}\n}\n\nmodule.exports = Router;\n\n\n//# sourceURL=webpack:///./src/router.js?");
+
+/***/ }),
+
+/***/ "./src/sent.js":
+/*!*********************!*\
+  !*** ./src/sent.js ***!
+  \*********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const MessageStore = __webpack_require__(/*! ./message_store.js */ \"./src/message_store.js\");\n\nSent = {};\n\nSent.render = function () {\n\tlet ul = document.createElement('ul');\n\tul.className = 'messages';\n\tMessageStore.getSentMessages().forEach(message => {\n\t\tmessageNode = this.renderMessage(message);\n\t\tul.appendChild(messageNode);\n\t});\n\treturn ul;\n};\n\nSent.renderMessage = function (message) {\n\tlet li = document.createElement('li');\n\tli.className = 'message';\n\tli.innerHTML = `\n\t<span class=\"to\">To: ${message.to}</span>\n\t<span class=\"subject\">${message.subject}</span>\n\t<span class=\"body\">${message.body}</span>\n\t`;\n\treturn li;\n};\n\nmodule.exports = Sent;\n\n\n//# sourceURL=webpack:///./src/sent.js?");
 
 /***/ })
 
