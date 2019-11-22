@@ -86,6 +86,17 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/compose.js":
+/*!************************!*\
+  !*** ./src/compose.js ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const MessageStore = __webpack_require__(/*! ./message_store.js */ \"./src/message_store.js\");\n\nCompose = {};\n\nCompose.render = function() {\n\tconst div = document.createElement('div');\n\tdiv.addEventListener('change', event => {\n\t\tlet ele = event.target;\n\t\tMessageStore.updateDraftField(ele.name, ele.value);\n\t});\n\tdiv.addEventListener('submit', event => {\n\t\tevent.preventDefault();\n\t\tMessageStore.sendDraft();\n\t\twindow.location.hash = \"#inbox\";\n\t});\n\tdiv.className = 'new-message';\n\tdiv.innerHTML = this.renderForm();\n\treturn div;\n};\n\nCompose.renderForm = function() {\n\tconst draft = MessageStore.getMessageDraft;\n\tconst draftForm = `\n\t\t<p>New Message</p>\n\t\t<form class=\"compose-form\">\n\t\t\t<input type=\"text\"\n\t\t\tname=\"to\"\n\t\t\tvalue=\"${draft.to}\"\n\t\t\tplaceholder=\"Recipient\">\n\n\t\t\t<input type=\"text\"\n\t\t\tname=\"subject\"\n\t\t\tvalue=\"${draft.subject}\"\n\t\t\tplaceholder=\"Subject\">\n\n\t\t\t<textarea name=\"body\" rows=\"20\">${draft.body}</textarea>\n\n\t\t\t<button\n\t\t\ttype=\"submit\"\n\t\t\tclass=\"btn btn-primary submit-message\">Send</button>\n\t\t</form>\n\t`;\n\treturn draftForm;\n};\n\nmodule.exports = Compose;\n\n\n//# sourceURL=webpack:///./src/compose.js?");
+
+/***/ }),
+
 /***/ "./src/inbox.js":
 /*!**********************!*\
   !*** ./src/inbox.js ***!
@@ -104,7 +115,7 @@ eval("const MessageStore = __webpack_require__(/*! ./message_store.js */ \"./src
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const Router = __webpack_require__(/*! ./router.js */ \"./src/router.js\");\nconst Inbox = __webpack_require__(/*! ./inbox.js */ \"./src/inbox.js\");\nconst Sent = __webpack_require__(/*! ./sent.js */ \"./src/sent.js\");\n\nconst routes = {\n\tinbox: Inbox,\n\tsent : Sent\n};\n\ndocument.addEventListener('DOMContentLoaded', event => {\n\tlet eles = document.querySelectorAll('.sidebar-nav li');\n\tlet content = document.querySelector('.content');\n\tnew Router(content, routes);\n\tlocation.hash = \"#inbox\";\n\teles.forEach(ele => {\n\t\tele.addEventListener('click', event => {\n\t\t\twindow.location.hash = ele.innerText.toLowerCase();\n\t\t});\n\t});\n});\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("const Router = __webpack_require__(/*! ./router.js */ \"./src/router.js\");\nconst Inbox = __webpack_require__(/*! ./inbox.js */ \"./src/inbox.js\");\nconst Sent = __webpack_require__(/*! ./sent.js */ \"./src/sent.js\");\nconst Compose = __webpack_require__(/*! ./compose.js */ \"./src/compose.js\");\n\nconst routes = {\n\tinbox: Inbox,\n\tsent : Sent,\n\tcompose : Compose\n};\n\ndocument.addEventListener('DOMContentLoaded', event => {\n\tlet eles = document.querySelectorAll('.sidebar-nav li');\n\tlet content = document.querySelector('.content');\n\tnew Router(content, routes);\n\tlocation.hash = \"#inbox\";\n\teles.forEach(ele => {\n\t\tele.addEventListener('click', event => {\n\t\t\twindow.location.hash = ele.innerText.toLowerCase();\n\t\t});\n\t});\n});\n\n\n//# sourceURL=webpack:///./src/index.js?");
 
 /***/ }),
 
@@ -115,7 +126,7 @@ eval("const Router = __webpack_require__(/*! ./router.js */ \"./src/router.js\")
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("const messages = {\n\tsent : [],\n\tinbox : []\n};\n\nconst message1 = {\n\tto: \"friend@mail.com\",\n\tsubject: \"Check this out\",\n\tbody: \"It's so cool\"\n};\nconst message2 = {\n\tto: \"person@mail.com\",\n\tsubject: \"zzz\",\n\tbody: \"so booring\"\n};\nconst message3 = {\n\tfrom: \"grandma@mail.com\",\n\tsubject: \"Fwd: Fwd: Fwd: Check this out\",\n\tbody:\n\t\t\"Stay at home mom discovers cure for leg cramps. Doctors hate her\"\n};\nconst message4 = {\n\tfrom: \"person@mail.com\",\n\tsubject: \"Questionnaire\",\n\tbody: \"Take this free quiz win $1000 dollars\"\n};\n\nmessages.sent.push(message1, message2);\nmessages.inbox.push(message3, message4);\n\nMessageStore = {\n\tgetInboxMessages : () => messages.inbox,\n\tgetSentMessages : () => messages.sent\n};\n\nmodule.exports = MessageStore;\n\n\n//# sourceURL=webpack:///./src/message_store.js?");
+eval("const messages = {\n\tsent : [],\n\tinbox : []\n};\n\nconst message1 = {\n\tto: \"friend@mail.com\",\n\tsubject: \"Check this out\",\n\tbody: \"It's so cool\"\n};\nconst message2 = {\n\tto: \"person@mail.com\",\n\tsubject: \"zzz\",\n\tbody: \"so booring\"\n};\nconst message3 = {\n\tfrom: \"grandma@mail.com\",\n\tsubject: \"Fwd: Fwd: Fwd: Check this out\",\n\tbody:\n\t\t\"Stay at home mom discovers cure for leg cramps. Doctors hate her\"\n};\nconst message4 = {\n\tfrom: \"person@mail.com\",\n\tsubject: \"Questionnaire\",\n\tbody: \"Take this free quiz win $1000 dollars\"\n};\n\nmessages.sent.push(message1, message2);\nmessages.inbox.push(message3, message4);\n\nclass Message {\n\tconstructor() {\n\t\tthis.from = \"\";\n\t\tthis.to = \"\";\n\t\tthis.subject = \"\";\n\t\tthis.body = \"\";\n\t}\n}\n\nlet messageDraft = new Message();\n\nMessageStore = {\n\tgetInboxMessages : () => messages.inbox,\n\tgetSentMessages : () => messages.sent,\n\tupdateDraftField : (field, value) => messageDraft[field] = value,\n\tsendDraft : () => {\n\t\tmessages.sent.push(messageDraft);\n\t\tmessageDraft = new Message();\n\t},\n\tgetMessageDraft : messageDraft\n};\n\nmodule.exports = MessageStore;\n\n\n//# sourceURL=webpack:///./src/message_store.js?");
 
 /***/ }),
 

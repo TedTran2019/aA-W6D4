@@ -28,9 +28,26 @@ const message4 = {
 messages.sent.push(message1, message2);
 messages.inbox.push(message3, message4);
 
+class Message {
+	constructor() {
+		this.from = "";
+		this.to = "";
+		this.subject = "";
+		this.body = "";
+	}
+}
+
+let messageDraft = new Message();
+
 MessageStore = {
 	getInboxMessages : () => messages.inbox,
-	getSentMessages : () => messages.sent
+	getSentMessages : () => messages.sent,
+	updateDraftField : (field, value) => messageDraft[field] = value,
+	sendDraft : () => {
+		messages.sent.push(messageDraft);
+		messageDraft = new Message();
+	},
+	getMessageDraft : messageDraft
 };
 
 module.exports = MessageStore;
