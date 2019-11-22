@@ -86,6 +86,17 @@
 /************************************************************************/
 /******/ ({
 
+/***/ "./src/Inbox.js":
+/*!**********************!*\
+  !*** ./src/Inbox.js ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+eval("const MessageStore = __webpack_require__(/*! ./message_store.js */ \"./src/message_store.js\");\n\nInbox = {};\n\nInbox.render = function() {\n\tlet ul = document.createElement('ul');\n\tul.className = 'messages';\n\tMessageStore.getInboxMessages().forEach(message => {\n\t\tmessageNode = this.renderMessage(message);\n\t\tul.appendChild(messageNode);\n\t});\n\treturn ul;\n};\n\nInbox.renderMessage = function (message) {\n\tlet li = document.createElement('li');\n\tli.className = 'message';\n\tli.innerHTML = `\n\t<span class=\"from\">${message.from}</span>\n\t<span class=\"subject\">${message.subject}</span>\n\t<span class=\"body\">${message.body}</span>\n\t`;\n\treturn li;\n};\n\nmodule.exports = Inbox;\n\n\n//# sourceURL=webpack:///./src/Inbox.js?");
+
+/***/ }),
+
 /***/ "./src/index.js":
 /*!**********************!*\
   !*** ./src/index.js ***!
@@ -93,7 +104,18 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-eval("const Router = __webpack_require__(/*! ./router.js */ \"./src/router.js\");\n\ndocument.addEventListener('DOMContentLoaded', event => {\n\tlet eles = document.querySelectorAll('.sidebar-nav li');\n\tlet content = document.querySelector('.content');\n\tnew Router(content)\n\teles.forEach(ele => {\n\t\tele.addEventListener('click', event => {\n\t\t\twindow.location.hash = ele.innerText.toLowerCase();\n\t\t});\n\t});\n});\n\n\n//# sourceURL=webpack:///./src/index.js?");
+eval("const Router = __webpack_require__(/*! ./router.js */ \"./src/router.js\");\nconst Inbox = __webpack_require__(/*! ./Inbox.js */ \"./src/Inbox.js\");\n\nconst routes = {\n\tinbox: Inbox\n};\n\ndocument.addEventListener('DOMContentLoaded', event => {\n\tlet eles = document.querySelectorAll('.sidebar-nav li');\n\tlet content = document.querySelector('.content');\n\tnew Router(content, routes);\n\tlocation.hash = \"#inbox\";\n\teles.forEach(ele => {\n\t\tele.addEventListener('click', event => {\n\t\t\twindow.location.hash = ele.innerText.toLowerCase();\n\t\t});\n\t});\n});\n\n\n//# sourceURL=webpack:///./src/index.js?");
+
+/***/ }),
+
+/***/ "./src/message_store.js":
+/*!******************************!*\
+  !*** ./src/message_store.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("const messages = {\n\tsent : [],\n\tinbox : []\n};\n\nconst message1 = {\n\tto: \"friend@mail.com\",\n\tsubject: \"Check this out\",\n\tbody: \"It's so cool\"\n};\nconst message2 = {\n\tto: \"person@mail.com\",\n\tsubject: \"zzz\",\n\tbody: \"so booring\"\n};\nconst message3 = {\n\tfrom: \"grandma@mail.com\",\n\tsubject: \"Fwd: Fwd: Fwd: Check this out\",\n\tbody:\n\t\t\"Stay at home mom discovers cure for leg cramps. Doctors hate her\"\n};\nconst message4 = {\n\tfrom: \"person@mail.com\",\n\tsubject: \"Questionnaire\",\n\tbody: \"Take this free quiz win $1000 dollars\"\n};\n\nmessages.sent.push(message1, message2);\nmessages.inbox.push(message3, message4);\n\nMessageStore = {\n\tgetInboxMessages : () => messages.inbox,\n\tgetSentMessages : () => messages.sent\n};\n\nmodule.exports = MessageStore;\n\n\n//# sourceURL=webpack:///./src/message_store.js?");
 
 /***/ }),
 
@@ -104,7 +126,7 @@ eval("const Router = __webpack_require__(/*! ./router.js */ \"./src/router.js\")
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-eval("class Router {\n\tconstructor(node) {\n\t\tthis.node = node;\n\t\tthis.start();\n\t}\n\n\tstart() {\n\t\tthis.render();\n\t\twindow.addEventListener('hashchange', _event => this.render());\n\t}\n\n\tactiveRoute() {\n\t\tlet locationStr = window.location.hash\n\t\treturn locationStr.slice(1, locationStr.length);\n\t}\n\n\trender() {\n\t\tthis.node.innerHTML = \"\";\n\t\tlet currentRoute = this.activeRoute();\n\t\tlet newP = document.createElement('p');\n\t\tnewP.innerHTML = currentRoute;\n\t\tthis.node.appendChild(newP);\n\t}\n}\n\nmodule.exports = Router;\n\n\n//# sourceURL=webpack:///./src/router.js?");
+eval("class Router {\n\tconstructor(node, routes) {\n\t\tthis.node = node;\n\t\tthis.routes = routes;\n\t\tthis.start();\n\t}\n\n\tstart() {\n\t\tthis.render();\n\t\twindow.addEventListener('hashchange', _event => this.render());\n\t}\n\n\tactiveRoute() {\n\t\tlet locationStr = window.location.hash\n\t\treturn this.routes[locationStr.slice(1, locationStr.length)];\n\t}\n\n\trender() {\n\t\tlet component = this.activeRoute();\n\t\tthis.node.innerHTML = \"\";\n\t\tif (component) {\n\t\t\tlet componentNode = component.render();\n\t\t\tthis.node.appendChild(componentNode);\n\t\t}\n\t}\n}\n\nmodule.exports = Router;\n\n\n//# sourceURL=webpack:///./src/router.js?");
 
 /***/ })
 
